@@ -2,9 +2,11 @@ import java.util.Scanner;
 
 public class Menu {
     private final Scanner scanner;
+    private final Calendar calendar;
 
     public Menu() {
         scanner = new Scanner(System.in);
+        calendar =new Calendar();
     }
 
     public String getUserInput(String prompt) {
@@ -40,7 +42,7 @@ public class Menu {
     public void displaySubMenu3() {
         System.out.println("Økonomi og Rapporter:");
         System.out.println("1. Generer revisorrapport");
-        System.out.println("2. Registrer betaling");
+        System.out.println("2. Registrer betaling/Kredit");
         System.out.println("3. Tilføj tilkøbte produkter");
         System.out.println("4. Tilbage til hovedmenu");
         System.out.println();
@@ -82,7 +84,9 @@ public class Menu {
                         String submenuChoice2 = getUserInput("Vælg en underkategori: ");
                         switch (submenuChoice2) {
                             case "1":
-                                //INDSÆT "Vis Kalender"-metode
+                                String dateStr = getUserInput("Indtast ønsket dato (dd-MM-yyyy)");
+                                System.out.println();
+                                calendar.showDate(dateStr);
                                 break;
                             case "2":
                                 //INDSÆT "Registrer ferie- eller fridage"-metode
