@@ -3,10 +3,12 @@ import java.util.Scanner;
 public class Menu {
     private final Scanner scanner;
     private final Calendar calendar;
+    private final Booking booking;
 
     public Menu() {
         scanner = new Scanner(System.in);
-        calendar =new Calendar();
+        calendar = new Calendar();
+        booking = new Booking(calendar);
     }
 
     public String getUserInput(String prompt) {
@@ -15,7 +17,7 @@ public class Menu {
     }
 
     public void displayMenu() {
-        System.out.println("Velkommen til Harry's Salon Booking System");
+        System.out.println("Harry's Salon - Bookingsystem");
         System.out.println("1. Booking (Opret/Slet)");
         System.out.println("2. Kalender (Vis kalender/Registrer ferie- eller fridage)");
         System.out.println("3. Økonomi (Generer revisorrapport/Registrer betaling/Tilføj tilkøbte produkter)");
@@ -54,6 +56,7 @@ public class Menu {
         while (running) {
             displayMenu();
             String input = getUserInput("Vælg en hovedkategori: ");
+            System.out.println();
 
             switch (input) {
                 case "1": // Hovedmenu 1: "Booking (Opret/Slet)"
@@ -63,13 +66,16 @@ public class Menu {
                         String submenuChoice = getUserInput("Vælg en underkategori: ");
                         switch (submenuChoice) {
                             case "1":
-                                //INDSÆT "Opret Booking"-metode
+                               booking.createBooking();
+                                System.out.println();
                                 break;
                             case "2":
-                                // INDSÆT "Slet Booking"-metode
+                                booking.deleteBooking();
+                                System.out.println();
                                 break;
                             case "3":
                                 submenuRunning = false;
+                                System.out.println();
                                 break;
                             default:
                                 System.out.println("Ugyldigt valg. Prøv igen.");
@@ -84,12 +90,14 @@ public class Menu {
                         String submenuChoice2 = getUserInput("Vælg en underkategori: ");
                         switch (submenuChoice2) {
                             case "1":
-                                String dateStr = getUserInput("Indtast ønsket dato (dd-MM-yyyy)");
+                                String inputShowDate = getUserInput("Indtast ønsket dato (dd-MM-yyyy)");
                                 System.out.println();
-                                calendar.showDate(dateStr);
+                                calendar.showDate(inputShowDate);
                                 break;
                             case "2":
-                                //INDSÆT "Registrer ferie- eller fridage"-metode
+                                String inputRegisterHoliday = getUserInput("Indtast dato for ferie eller fridag (dd-MM-yyyy): ");
+                                System.out.println();
+                                calendar.registerHoliday(inputRegisterHoliday);
                                 break;
                             case "3":
                                 submenuRunning2 = false;
@@ -126,11 +134,9 @@ public class Menu {
                                     break;
                             }
                         }
-
                     }
                     else
                         System.out.println("Forkert kodeord/n");
-                    submenuRunning3 = false;
                     break;
                 case "4":
                     running = false;
