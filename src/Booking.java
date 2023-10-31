@@ -1,7 +1,8 @@
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class Booking {
     private final Calendar calendar;
@@ -13,25 +14,33 @@ public class Booking {
     }
 
     public void createBooking() {
-        System.out.print("Indtast ønsket dato (dd-MM-yyyy): ");
-        String dateStr = scanner.nextLine();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate startDate = LocalDate.parse(dateStr, formatter);
-        System.out.println();
+        LocalDate date = InputHelper.inputHelperDate();
+        ArrayList<BookingSlots> availableSlots = calendar.getDailySlots(date);
+        int globalCounter = 1;
+        int counter = 0;
 
-        TreeMap<Integer, String> timeSlotMap = new TreeMap<>();
-        int counter = 1;
+        for (int i=0; i<7; i++) {
 
-        for (int i = 0; i < 5; i++) {
-            LocalDate currentDate = startDate.plusDays(i);
-            TreeMap<String, String> dailySlots = calendar.getDailySlots(currentDate);
-            if (dailySlots != null) {
-                System.out.println("Dato: " + currentDate.format(formatter) + ":");
-                for (String timeSlot : dailySlots.keySet()) {
-                    System.out.println(counter + ". " + timeSlot + " - " + dailySlots.get(timeSlot));
-                    timeSlotMap.put(counter, currentDate + "|" + timeSlot);
-                    counter++;
-                }
+            LocalDate currentDate = date.plusDays(i);
+            DayOfWeek dayOfWeek = currentDate.getDayOfWeek();
+            if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == dayOfWeek.SUNDAY) {
+                continue;
+            }
+
+                availableSlots = calendar.getDailySlots(currentDate);
+
+            if (availableSlots.isEmpty()) {
+                System.out.println("Ingen ledige tider på denne dato.");
+                continue;
+            }
+
+            System.out.println("Dato " + currentDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+
+            ;
+            for (BookingSlots slot : availableSlots) {
+
+                System.out.println(counter + ". " + slot.timeSlot + " - " + slot.status);
+                counter ++;
             }
             System.out.println();
         }
@@ -39,69 +48,41 @@ public class Booking {
         System.out.print("Vælg en tid (nummer): ");
         int selectedTime = Integer.parseInt(scanner.nextLine());
 
-        String selectedTimeSlotInfo = timeSlotMap.get(selectedTime);
-        if (selectedTimeSlotInfo == null) {
+        if (selectedTime > 0 && selectedTime <= globalCounter - 1) {
+            BookingSlots selectedSlot = availableSlots.get(selectedTime - 1);
+            System.out.print("Indtast navn på kunden: ");
+            String name = scanner.nextLine();
+            selectedSlot.status = name;
+            System.out.println("Booking bekræftet for " + name + " den " + date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " kl. " + selectedSlot.timeSlot);
+        } else {
             System.out.println("Ugyldigt valg. Prøv igen.");
+        }
+    }
+
+    public void deleteBooking () {
+        LocalDate date = InputHelper.inputHelperDate();
+        ArrayList<BookingSlots> bookedSlots = calendar.getDailySlots(date);
+
+        if (bookedSlots.isEmpty()) {
+            System.out.println("Ingen bookinger fundet på denne dato.");
             return;
         }
 
-        String[] parts = selectedTimeSlotInfo.split("\\|");
-        LocalDate selectedDate = LocalDate.parse(parts[0]);
-        String selectedTimeSlot = parts[1];
-
-        TreeMap<String, String> selectedDailySlots = calendar.getDailySlots(selectedDate);
-        if (!"Ledig".equals(selectedDailySlots.get(selectedTimeSlot))) {
-            System.out.println("Dette tidspunkt er allerede booket. Vælg et andet.");
-            return;
+        int counter = 1;
+        for (BookingSlots slot : bookedSlots) {
+            System.out.println(counter + ". " + slot.timeSlot + " - " + slot.status);
+            counter++;
         }
 
-        System.out.print("Indtast navn på kunden: ");
-        String name = scanner.nextLine();
+        System.out.print("Vælg en tid (nummer) for at slette bookingen: ");
+        int selectedTime = Integer.parseInt(scanner.nextLine());
 
-        selectedDailySlots.put(selectedTimeSlot, name);
-        System.out.println("Booking bekræftet for " + name + " den " + selectedDate.format(formatter) + " kl. " + selectedTimeSlot);
-    }
-
-    public void deleteBooking() {
-            System.out.print("Indtast dato for bookingen, du vil slette (dd-MM-yyyy): ");
-            String dateStr = scanner.nextLine();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate selectedDate = LocalDate.parse(dateStr, formatter);
-            System.out.println();
-
-            TreeMap<String, String> dailySlots = calendar.getDailySlots(selectedDate);
-            if (dailySlots == null) {
-                System.out.println("Ingen bookinger fundet på denne dato.");
-                return;
-            }
-
-            System.out.println("Tilgængelige bookinger på " + selectedDate.format(formatter) + ":");
-            int counter = 1;
-            TreeMap<Integer, String> timeSlotMap = new TreeMap<>();
-            for (String timeSlot : dailySlots.keySet()) {
-                String status = dailySlots.get(timeSlot);
-                if (!"Ledig".equals(status)) {
-                    System.out.println(counter + ". " + timeSlot + " - " + status);
-                    timeSlotMap.put(counter, timeSlot);
-                    counter++;
-                }
-            }
-
-            if (timeSlotMap.isEmpty()) {
-                System.out.println("Ingen bookinger fundet på denne dato.");
-                return;
-            }
-
-            System.out.print("Vælg en tid (nummer) for at slette bookingen: ");
-            int selectedTime = Integer.parseInt(scanner.nextLine());
-
-            String selectedTimeSlot = timeSlotMap.get(selectedTime);
-            if (selectedTimeSlot == null) {
-                System.out.println("Ugyldigt valg. Prøv igen.");
-                return;
-            }
-
-            dailySlots.put(selectedTimeSlot, "Ledig");
-            System.out.println("Booking slettet for " + selectedDate.format(formatter) + " kl. " + selectedTimeSlot);
+        if (selectedTime > 0 && selectedTime <= bookedSlots.size()) {
+            BookingSlots selectedSlot = bookedSlots.get(selectedTime - 1);
+            selectedSlot.status = "Ledig";
+            System.out.println("Booking slettet for " + date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " kl. " + selectedSlot.timeSlot);
+        } else {
+            System.out.println("Ugyldigt valg. Prøv igen.");
         }
     }
+}

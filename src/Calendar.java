@@ -1,83 +1,76 @@
 import java.time.LocalDate;
 import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Calendar {
-    private TreeMap<LocalDate, TreeMap<String, String>> calendar;
+    public ArrayList<BookingSlots> calendar;
+    private final Scanner scanner;
 
     public Calendar() {
-        calendar = new TreeMap<>();
+        calendar = new ArrayList<>();
         createCalendar();
+        this.scanner = new Scanner(System.in);
     }
 
-    //Metoder der laver kalender
+    //Metode der laver kalender
     private void createCalendar() {
         LocalDate startDate = LocalDate.of(2023, 10, 1);
-        LocalDate endDate = LocalDate.of(2024, 12, 31);
+        LocalDate endDate = LocalDate.of(2025, 12, 31);
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-            TreeMap<String, String> dailySlots = new TreeMap<>();
             String status = isWeekend(date) ? "Lukket (Weekend)" : "Ledig";
-            createDailySlots(dailySlots, status);
-            calendar.put(date, dailySlots);
+            createDailySlots(date, status);
         }
     }
 
-    //Metode der tjekker om dagen er en weekenddag
+    //Metode der tjekker om dagen er en Weekenddag
     private boolean isWeekend(LocalDate date) {
         DayOfWeek day = date.getDayOfWeek();
         return day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY;
     }
 
-    //Metode der laver 8 timeslots på en dag (fra kl.10:00-18:00)
-    private void createDailySlots(TreeMap<String, String> dailySlots, String status) {
+    //Metode der laver timeslots af en times varighed, startende fra kl.10
+    private void createDailySlots(LocalDate date, String status) {
         for (int hour = 10; hour < 18; hour++) {
             String timeSlot = String.format("%d:00 - %d:00", hour, hour + 1);
-            dailySlots.put(timeSlot, status);
+            calendar.add(new BookingSlots(date, timeSlot, status));
         }
     }
 
-    // Vis en valgt dato
-    public void showDate(String inputShowDate) {
-        LocalDate date = LocalDate.parse(inputShowDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    //Metode der viser en valgt dato
+    public void showDate() {
+        LocalDate date = InputHelper.inputHelperDate();
 
-        // metode der viser timeslots og tilgængelighed.
-        TreeMap<String, String> dailySlots = getDailySlots(date);
-
-        if (dailySlots == null) {
-            System.out.println(date.format(formatter) + ": Ugyldigt valg");
-        } else {
-            System.out.println(date.format(formatter) + ":");
-            dailySlots.forEach((timeSlot, availability) -> {
-                System.out.println(timeSlot + " - " + availability);
-            });
-        }
-        System.out.println();
-    }
-
-    // Metode der henter timeslots
-    public TreeMap<String, String> getDailySlots(LocalDate date) {
-        return calendar.get(date);
-    }
-
-    public void registerHoliday(String inputRegisterHoliday) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate date = LocalDate.parse(inputRegisterHoliday, formatter);
-
-        TreeMap<String, String> dailySlots = calendar.get(date);
-        if (dailySlots != null) {
-            for (String timeSlot : dailySlots.keySet()) {
-                dailySlots.put(timeSlot, "Ferie/Fri");
+        System.out.println("Dato "+date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + ":");
+        for (BookingSlots booking : calendar) {
+            if (booking.date.equals(date)) {
+                System.out.println(booking.timeSlot + " - " + booking.status);
             }
-            System.out.println("Ferie/Fri er registreret for " + inputRegisterHoliday);
-        } else {
-            System.out.println("Datoen " + inputRegisterHoliday + " findes ikke i kalenderen.");
         }
-        System.out.println();
     }
 
+    //Metode der viser timeslots
+    public ArrayList<BookingSlots> getDailySlots(LocalDate date) {
+        ArrayList<BookingSlots> dailySlots = new ArrayList<>();
+        for (BookingSlots booking : calendar) {
+            if (booking.date.equals(date)) {
+                dailySlots.add(booking);
+            }
+        }
+        return dailySlots;
+    }
+
+    //Metode der markerer ferie- fridage
+    public void registerHoliday() {
+        LocalDate date = InputHelper.inputHelperDate();
+
+        for (BookingSlots booking : calendar) {
+            if (booking.date.equals(date)) {
+                booking.status = "Ferie/Fri";
+            }
+        }
+        System.out.println("Ferie/Fri er registreret for " + date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+    }
 }
-
-
