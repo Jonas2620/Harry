@@ -1,21 +1,18 @@
 import java.util.Scanner;
 
 public class Menu {
-    private final Scanner scanner;
     private final Calendar calendar;
+    private final Booking booking;
+    private final Economy economy;
 
     public Menu() {
-        scanner = new Scanner(System.in);
-        calendar =new Calendar();
-    }
-
-    public String getUserInput(String prompt) {
-        System.out.print(prompt);
-        return scanner.nextLine();
+        calendar = new Calendar();
+        booking = new Booking(calendar);
+        economy = new Economy(calendar);
     }
 
     public void displayMenu() {
-        System.out.println("Velkommen til Harry's Salon Booking System");
+        System.out.println("Harry's Salon - Bookingsystem");
         System.out.println("1. Booking (Opret/Slet)");
         System.out.println("2. Kalender (Vis kalender/Registrer ferie- eller fridage)");
         System.out.println("3. Økonomi (Generer revisorrapport/Registrer betaling/Tilføj tilkøbte produkter)");
@@ -53,20 +50,21 @@ public class Menu {
 
         while (running) {
             displayMenu();
-            String input = getUserInput("Vælg en hovedkategori: ");
+            String input = InputHelper.getUserInput("Vælg en hovedkategori: ");
+            System.out.println();
 
             switch (input) {
                 case "1": // Hovedmenu 1: "Booking (Opret/Slet)"
                     boolean submenuRunning = true;
                     while (submenuRunning) {
-                        displaySubMenu1(); // Vis undermenuen for "Booking"
-                        String submenuChoice = getUserInput("Vælg en underkategori: ");
+                        displaySubMenu1();
+                        String submenuChoice = InputHelper.getUserInput("Vælg en underkategori: ");
                         switch (submenuChoice) {
                             case "1":
-                                //INDSÆT "Opret Booking"-metode
+                               booking.createBooking();
                                 break;
                             case "2":
-                                // INDSÆT "Slet Booking"-metode
+                                booking.deleteBooking();
                                 break;
                             case "3":
                                 submenuRunning = false;
@@ -75,21 +73,20 @@ public class Menu {
                                 System.out.println("Ugyldigt valg. Prøv igen.");
                                 break;
                         }
+                        System.out.println();
                     }
                     break;
                 case "2": // Hovedmenu 2: "Kalender (Vis kalender/Registrer ferie- eller fridage)"
                     boolean submenuRunning2 = true;
                     while (submenuRunning2) {
-                        displaySubMenu2(); // Vis undermenuen for "Kalender"
-                        String submenuChoice2 = getUserInput("Vælg en underkategori: ");
+                        displaySubMenu2();
+                        String submenuChoice2 = InputHelper.getUserInput("Vælg en underkategori: ");
                         switch (submenuChoice2) {
                             case "1":
-                                String dateStr = getUserInput("Indtast ønsket dato (dd-MM-yyyy)");
-                                System.out.println();
-                                calendar.showDate(dateStr);
+                                calendar.showDate();
                                 break;
                             case "2":
-                                //INDSÆT "Registrer ferie- eller fridage"-metode
+                                calendar.registerHoliday();
                                 break;
                             case "3":
                                 submenuRunning2 = false;
@@ -98,22 +95,23 @@ public class Menu {
                                 System.out.println("Ugyldigt valg. Prøv igen.");
                                 break;
                         }
+                        System.out.println();
                     }
                     break;
                 case "3": // Hovedmenu 3: "Økonomi (Generer revisorrapport/Registrer Betaling/Tilføj tilkøbte produkter)"
                     boolean submenuRunning3 = true;
-                    String Kodeord = getUserInput("Indtast Kodeord: ");
-                    if (Kodeord.equals("hairyharry")) {
+                    String Password = InputHelper.getUserInput("Indtast Kodeord: ");
+                    if (Password.equals("hairyharry")) {
                         System.out.println();
                         while (submenuRunning3) {
-                            displaySubMenu3(); // Vis undermenuen for "Kalender"
-                            String submenuChoice3 = getUserInput("Vælg en underkategori: ");
+                            displaySubMenu3();
+                            String submenuChoice3 = InputHelper.getUserInput("Vælg en underkategori: ");
                             switch (submenuChoice3) {
                                 case "1":
                                     //INDSÆT "Generer revisorraport"-metode
                                     break;
                                 case "2":
-                                    //INDSÆT "Registrer Betaling"-metode
+                                    economy.markAsCredit();
                                     break;
                                 case "3":
                                     //INDSÆT "Tilføj tilkøbte produkter"-metode
@@ -126,11 +124,9 @@ public class Menu {
                                     break;
                             }
                         }
-
                     }
                     else
                         System.out.println("Forkert kodeord/n");
-                    submenuRunning3 = false;
                     break;
                 case "4":
                     running = false;
@@ -139,6 +135,7 @@ public class Menu {
                     System.out.println("Ugyldigt valg. Prøv igen.");
                     break;
             }
+            System.out.println();
         }
     }
 }

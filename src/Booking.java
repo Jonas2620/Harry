@@ -1,5 +1,88 @@
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Booking {
-    public static void main(String[] args) {
-        System.out.println("Hej hej");
+    private final Calendar calendar;
+    private final Scanner scanner;
+
+    public Booking(Calendar calendar) {
+        this.calendar = calendar;
+        this.scanner = new Scanner(System.in);
+    }
+
+    public void createBooking() {
+        LocalDate date = InputHelper.inputHelperDate();
+        ArrayList<BookingSlots> availableSlots = calendar.getDailySlots(date);
+        int globalCounter = 1;
+        int counter = 0;
+
+        for (int i=0; i<7; i++) {
+
+            LocalDate currentDate = date.plusDays(i);
+            DayOfWeek dayOfWeek = currentDate.getDayOfWeek();
+            if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == dayOfWeek.SUNDAY) {
+                continue;
+            }
+
+                availableSlots = calendar.getDailySlots(currentDate);
+
+            if (availableSlots.isEmpty()) {
+                System.out.println("Ingen ledige tider på denne dato.");
+                continue;
+            }
+
+            System.out.println("Dato " + currentDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+
+            ;
+            for (BookingSlots slot : availableSlots) {
+
+                System.out.println(counter + ". " + slot.timeSlot + " - " + slot.status);
+                counter ++;
+            }
+            System.out.println();
+        }
+
+        System.out.print("Vælg en tid (nummer): ");
+        int selectedTime = Integer.parseInt(scanner.nextLine());
+
+        if (selectedTime > 0 && selectedTime <= globalCounter - 1) {
+            BookingSlots selectedSlot = availableSlots.get(selectedTime - 1);
+            System.out.print("Indtast navn på kunden: ");
+            String name = scanner.nextLine();
+            selectedSlot.status = name;
+            System.out.println("Booking bekræftet for " + name + " den " + date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " kl. " + selectedSlot.timeSlot);
+        } else {
+            System.out.println("Ugyldigt valg. Prøv igen.");
+        }
+    }
+
+    public void deleteBooking () {
+        LocalDate date = InputHelper.inputHelperDate();
+        ArrayList<BookingSlots> bookedSlots = calendar.getDailySlots(date);
+
+        if (bookedSlots.isEmpty()) {
+            System.out.println("Ingen bookinger fundet på denne dato.");
+            return;
+        }
+
+        int counter = 1;
+        for (BookingSlots slot : bookedSlots) {
+            System.out.println(counter + ". " + slot.timeSlot + " - " + slot.status);
+            counter++;
+        }
+
+        System.out.print("Vælg en tid (nummer) for at slette bookingen: ");
+        int selectedTime = Integer.parseInt(scanner.nextLine());
+
+        if (selectedTime > 0 && selectedTime <= bookedSlots.size()) {
+            BookingSlots selectedSlot = bookedSlots.get(selectedTime - 1);
+            selectedSlot.status = "Ledig";
+            System.out.println("Booking slettet for " + date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " kl. " + selectedSlot.timeSlot);
+        } else {
+            System.out.println("Ugyldigt valg. Prøv igen.");
+        }
     }
 }
