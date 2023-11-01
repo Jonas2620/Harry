@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Menu {
     private final Calendar calendar;
     private final Booking booking;
@@ -39,9 +37,10 @@ public class Menu {
     public void displaySubMenu3() {
         System.out.println("Økonomi og Rapporter:");
         System.out.println("1. Generer revisorrapport");
-        System.out.println("2. Registrer betaling/Kredit");
-        System.out.println("3. Tilføj tilkøbte produkter");
-        System.out.println("4. Tilbage til hovedmenu");
+        System.out.println("2. Registrer Kredit");
+        System.out.println("3. Slet Kredit");
+        System.out.println("4. Tilføj tilkøbte produkter");
+        System.out.println("5. Tilbage til hovedmenu");
         System.out.println();
     }
 
@@ -114,9 +113,12 @@ public class Menu {
                                     economy.markAsCredit();
                                     break;
                                 case "3":
-                                    //INDSÆT "Tilføj tilkøbte produkter"-metode
+                                    economy.deleteCredit();
                                     break;
                                 case "4":
+                                    //INDSÆT "Tilføj tilkøbte produkter"-metode
+                                    break;
+                                case "5":
                                     submenuRunning3 = false;
                                     break;
                                 default:

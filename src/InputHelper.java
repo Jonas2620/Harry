@@ -8,7 +8,7 @@ public class InputHelper {
         System.out.print(prompt);
         return scanner.nextLine();
     }
-    public static LocalDate inputHelperDate() {
+    public static LocalDate inputHelperShowDate() {
         String input = getUserInput("Indtast ønskede dato (dd-MM-yyyy): ");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate date = LocalDate.parse(input, formatter);
@@ -16,4 +16,3 @@ public class InputHelper {
         return date;
     }
 }
-

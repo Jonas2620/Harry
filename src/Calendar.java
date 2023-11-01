@@ -2,16 +2,13 @@ import java.time.LocalDate;
 import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Calendar {
     public ArrayList<BookingSlots> calendar;
-    private final Scanner scanner;
 
     public Calendar() {
         calendar = new ArrayList<>();
         createCalendar();
-        this.scanner = new Scanner(System.in);
     }
 
     //Metode der laver kalender
@@ -41,7 +38,7 @@ public class Calendar {
 
     //Metode der viser en valgt dato
     public void showDate() {
-        LocalDate date = InputHelper.inputHelperDate();
+        LocalDate date = InputHelper.inputHelperShowDate();
 
         System.out.println("Dato "+date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + ":");
         for (BookingSlots booking : calendar) {
@@ -64,7 +61,7 @@ public class Calendar {
 
     //Metode der markerer ferie- fridage
     public void registerHoliday() {
-        LocalDate date = InputHelper.inputHelperDate();
+        LocalDate date = InputHelper.inputHelperShowDate();
 
         for (BookingSlots booking : calendar) {
             if (booking.date.equals(date)) {
