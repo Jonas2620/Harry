@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class Menu {
     private final Calendar calendar;
     private final Booking booking;
@@ -13,7 +15,7 @@ public class Menu {
         System.out.println("Harry's Salon - Bookingsystem");
         System.out.println("1. Booking (Opret/Slet)");
         System.out.println("2. Kalender (Vis kalender/Registrer ferie- eller fridage)");
-        System.out.println("3. Økonomi (Generer revisorrapport/Registrer betaling/Tilføj tilkøbte produkter)");
+        System.out.println("3. Økonomi (Tilføj tilkøbte produkter/Registrer kredit/Slet kredit/Revisorrapport)");
         System.out.println("4. Afslut");
         System.out.println();
     }
@@ -36,10 +38,10 @@ public class Menu {
 
     public void displaySubMenu3() {
         System.out.println("Økonomi og Rapporter:");
-        System.out.println("1. Generer revisorrapport");
-        System.out.println("2. Registrer Kredit");
-        System.out.println("3. Slet Kredit");
-        System.out.println("4. Tilføj tilkøbte produkter");
+        System.out.println("1. Tilføj tilkøbte produkter");
+        System.out.println("2. Registrer kredit");
+        System.out.println("3. Slet kredit");
+        System.out.println("4. Generer revisorrapport");
         System.out.println("5. Tilbage til hovedmenu");
         System.out.println();
     }
@@ -107,7 +109,7 @@ public class Menu {
                             String submenuChoice3 = InputHelper.getUserInput("Vælg en underkategori: ");
                             switch (submenuChoice3) {
                                 case "1":
-                                    //INDSÆT "Generer revisorraport"-metode
+                                    economy.addPurchasedProducts();
                                     break;
                                 case "2":
                                     economy.markAsCredit();
@@ -116,7 +118,7 @@ public class Menu {
                                     economy.deleteCredit();
                                     break;
                                 case "4":
-                                    //INDSÆT "Tilføj tilkøbte produkter"-metode
+                                    economy.dailyEconomicReport();
                                     break;
                                 case "5":
                                     submenuRunning3 = false;
@@ -125,6 +127,7 @@ public class Menu {
                                     System.out.println("Ugyldigt valg. Prøv igen.");
                                     break;
                             }
+                            System.out.println();
                         }
                     }
                     else
@@ -137,7 +140,6 @@ public class Menu {
                     System.out.println("Ugyldigt valg. Prøv igen.");
                     break;
             }
-            System.out.println();
         }
     }
 }

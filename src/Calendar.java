@@ -30,9 +30,10 @@ public class Calendar {
 
     //Metode der laver timeslots af en times varighed, startende fra kl.10
     private void createDailySlots(LocalDate date, String status) {
+        int amount = 200;
         for (int hour = 10; hour < 18; hour++) {
             String timeSlot = String.format("%d:00 - %d:00", hour, hour + 1);
-            calendar.add(new BookingSlots(date, timeSlot, status));
+            calendar.add(new BookingSlots(date, timeSlot, status, amount));
         }
     }
 
