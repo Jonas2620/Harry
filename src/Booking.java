@@ -55,7 +55,7 @@ public class Booking {
         }
     }
 
-    public void deleteBooking () {
+    public void deleteBooking() {
         LocalDate date = InputHelper.inputHelperShowDate();
         ArrayList<BookingSlots> bookedSlots = calendar.getDailySlots(date);
 
@@ -71,13 +71,17 @@ public class Booking {
         }
 
         System.out.print("Vælg en tid (nummer) for at slette bookingen: ");
-        int selectedTime = Integer.parseInt(scanner.nextLine());
+        try {
+            int selectedTime = Integer.parseInt(scanner.nextLine());
 
-        if (selectedTime > 0 && selectedTime <= bookedSlots.size()) {
-            BookingSlots selectedSlot = bookedSlots.get(selectedTime - 1);
-            selectedSlot.status = "Ledig";
-            System.out.println("Booking slettet for " + date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " kl. " + selectedSlot.timeSlot);
-        } else {
+            if (selectedTime > 0 && selectedTime <= bookedSlots.size()) {
+                BookingSlots selectedSlot = bookedSlots.get(selectedTime - 1);
+                selectedSlot.status = "Ledig";
+                System.out.println("Booking slettet for " + date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " kl. " + selectedSlot.timeSlot);
+            } else {
+                System.out.println("Ugyldigt valg. Prøv igen.");
+            }
+        } catch (NumberFormatException e) {
             System.out.println("Ugyldigt valg. Prøv igen.");
         }
     }

@@ -32,20 +32,24 @@ public class Economy {
         }
 
         System.out.print("Vælg en tid for at markere som 'Kredit' (nummer): ");
-        int selectedTime = Integer.parseInt(scanner.nextLine());
+        try {
+            int selectedTime = Integer.parseInt(scanner.nextLine());
 
-        counter = 1;
-        for (BookingSlots booking : calendar.calendar) {
-            if (booking.date.equals(date) && !"Ledig".equals(booking.status)) {
-                if (counter == selectedTime) {
-                    booking.status = booking.status + " (Kredit)";
-                    System.out.println("Tiden " + booking.timeSlot + " er nu markeret som 'Kredit'.");
-                    return;
+            counter = 1;
+            for (BookingSlots booking : calendar.calendar) {
+                if (booking.date.equals(date) && !"Ledig".equals(booking.status)) {
+                    if (counter == selectedTime) {
+                        booking.status = booking.status + " (Kredit)";
+                        System.out.println("Tiden " + booking.timeSlot + " er nu markeret som 'Kredit'.");
+                        return;
+                    }
+                    counter++;
                 }
-                counter++;
             }
+            System.out.println("Ugyldigt valg. Prøv igen.");
+        } catch (NumberFormatException e){
+            System.out.println("Ugyldigt valg. Prøv igen.");
         }
-        System.out.println("Ugyldigt valg. Prøv igen.");
     }
 
     public void deleteCredit() {
@@ -70,14 +74,19 @@ public class Economy {
         }
 
         System.out.print("Vælg en tid for at fjerne 'Kredit' markeringen (nummer): ");
-        int selectedTime = Integer.parseInt(scanner.nextLine());
+        try {
+            int selectedTime = Integer.parseInt(scanner.nextLine());
 
-        if (selectedTime > 0 && selectedTime <= creditBookings.size()) {
-            BookingSlots selectedBooking = creditBookings.get(selectedTime - 1);
-            selectedBooking.status = selectedBooking.status.replace(" (Kredit)", "");
-            System.out.println("Tiden " + selectedBooking.timeSlot + " den " + selectedBooking.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " er nu fjernet fra 'Kredit'.");
-        } else {
+            if (selectedTime > 0 && selectedTime <= creditBookings.size()) {
+                BookingSlots selectedBooking = creditBookings.get(selectedTime - 1);
+                selectedBooking.status = selectedBooking.status.replace(" (Kredit)", "");
+                System.out.println("Tiden " + selectedBooking.timeSlot + " den " + selectedBooking.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " er nu fjernet fra 'Kredit'.");
+            } else {
+                System.out.println("Ugyldigt valg. Prøv igen.");
+            }
+        } catch (NumberFormatException e){
             System.out.println("Ugyldigt valg. Prøv igen.");
+
         }
     }
 
@@ -101,19 +110,24 @@ public class Economy {
         }
 
         System.out.print("Vælg en tid (nummer) for at tilføje tilkøbte produkter: ");
-        int selectedTime = Integer.parseInt(scanner.nextLine());
+        try {
+            int selectedTime = Integer.parseInt(scanner.nextLine());
 
-        if (selectedTime > 0 && selectedTime <= nonEmptySlots.size()) {
-            BookingSlots selectedSlot = nonEmptySlots.get(selectedTime - 1);
-            System.out.print("Indtast beløb for tilkøbte produkter: ");
-            int amount = Integer.parseInt(scanner.nextLine());
-            amount += 200; // Plus 200 kr for standard klipning
-            selectedSlot.amount = amount;  // Gem beløbet i BookingSlots
-            System.out.println("Beløbet for tilkøbte produkter og klipning er nu: " + amount + " kr.");
-        } else {
+            if (selectedTime > 0 && selectedTime <= nonEmptySlots.size()) {
+                BookingSlots selectedSlot = nonEmptySlots.get(selectedTime - 1);
+                System.out.print("Indtast beløb for tilkøbte produkter: ");
+                int amount = Integer.parseInt(scanner.nextLine());
+                amount += 200; // Plus 200 kr for standard klipning
+                selectedSlot.amount = amount;  // Gem beløbet i BookingSlots
+                System.out.println("Beløbet for tilkøbte produkter og klipning er nu: " + amount + " kr.");
+            } else {
+                System.out.println("Ugyldigt valg. Prøv igen.");
+            }
+        } catch (NumberFormatException e){
             System.out.println("Ugyldigt valg. Prøv igen.");
         }
     }
+
 
     public void dailyEconomicReport() {
         int paidAmount = 0;

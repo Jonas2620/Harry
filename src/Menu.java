@@ -15,7 +15,7 @@ public class Menu {
         System.out.println("2. Kalender (Vis kalender/Registrer ferie- eller fridage)");
         System.out.println("3. Økonomi (Tilføj tilkøbte produkter/Registrer kredit/Slet kredit/Revisorrapport)");
         System.out.println("4. Gem og Afslut");
-        System.out.println("5. Annuller og Afslut");
+        System.out.println("x. Annuller og Afslut");
         System.out.println();
     }
 
@@ -130,16 +130,17 @@ public class Menu {
                         }
                     }
                     else
-                        System.out.println("Forkert kodeord/n");
+                        System.out.println("Forkert kodeord\n");
                     break;
                 case "4":
                     running = false;
                     calendar.saveCalendar();
                     System.out.println("Dataen er gemt");
                     break;
-                case "5":
+                case "x":
                     System.out.println("Ændringerne er annulleret");
                     running = false;
+                    break;
                 default:
                     System.out.println("Ugyldigt valg. Prøv igen.");
                     break;
