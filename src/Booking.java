@@ -36,7 +36,7 @@ public class Booking {
                     System.out.println();
                 }
             }
-        } //h
+        } //
 
         System.out.print("Vælg en tid (nummer): ");
         try {
