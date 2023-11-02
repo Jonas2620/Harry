@@ -1,5 +1,3 @@
-import java.time.LocalDate;
-
 public class Menu {
     private final Calendar calendar;
     private final Booking booking;
