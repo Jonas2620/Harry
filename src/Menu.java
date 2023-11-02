@@ -14,7 +14,8 @@ public class Menu {
         System.out.println("1. Booking (Opret/Slet)");
         System.out.println("2. Kalender (Vis kalender/Registrer ferie- eller fridage)");
         System.out.println("3. Økonomi (Tilføj tilkøbte produkter/Registrer kredit/Slet kredit/Revisorrapport)");
-        System.out.println("4. Afslut");
+        System.out.println("4. Gem og Afslut");
+        System.out.println("5. Annuller og Afslut");
         System.out.println();
     }
 
@@ -133,7 +134,12 @@ public class Menu {
                     break;
                 case "4":
                     running = false;
+                    calendar.saveCalendar();
+                    System.out.println("Dataen er gemt");
                     break;
+                case "5":
+                    System.out.println("Ændringerne er annulleret");
+                    running = false;
                 default:
                     System.out.println("Ugyldigt valg. Prøv igen.");
                     break;
