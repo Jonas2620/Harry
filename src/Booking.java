@@ -39,15 +39,18 @@ public class Booking {
         }
 
         System.out.print("Vælg en tid (nummer): ");
-        int selectedTime = Integer.parseInt(scanner.nextLine());
-
-        if (selectedTime > 0 && selectedTime <= allAvailableSlots.size()) {
-            BookingSlots selectedSlot = allAvailableSlots.get(selectedTime - 1);
-            System.out.print("Indtast navn på kunden: ");
-            String name = scanner.nextLine();
-            selectedSlot.status = name;
-            System.out.println("Booking bekræftet for " + name + " den " + selectedSlot.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " kl. " + selectedSlot.timeSlot);
-        } else {
+        try {
+            int selectedTime = Integer.parseInt(scanner.nextLine());
+            if (selectedTime > 0 && selectedTime <= allAvailableSlots.size()) {
+                BookingSlots selectedSlot = allAvailableSlots.get(selectedTime - 1);
+                System.out.print("Indtast navn på kunden: ");
+                String name = scanner.nextLine();
+                selectedSlot.status = name;
+                System.out.println("Booking bekræftet for " + name + " den " + selectedSlot.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " kl. " + selectedSlot.timeSlot);
+            } else {
+                System.out.println("Ugyldigt valg. Prøv igen.");
+            }
+        } catch (NumberFormatException e) {
             System.out.println("Ugyldigt valg. Prøv igen.");
         }
     }
