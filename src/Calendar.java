@@ -4,8 +4,6 @@ import java.util.*;
 import java.io.*;
 import java.nio.file.*;
 
-
-@SuppressWarnings("CallToPrintStackTrace")
 public class Calendar {
     public ArrayList<BookingSlots> calendar;
     private static final String FILE_NAME = "Harry Calendar.txt";
@@ -97,7 +95,6 @@ public class Calendar {
     }
 
     //Metode der indlæser kalender
-    @SuppressWarnings("CallToPrintStackTrace")
     private void loadCalendar() {
         try {
             List<String> lines = Files.readAllLines(Paths.get(FILE_NAME));
