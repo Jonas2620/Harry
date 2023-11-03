@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.format.*;
 import java.util.Scanner;
 
+//Klasse med hjælpemetoder til inputs. InputHelper scanner input fra brugeren og returnerer det.
 public class InputHelper {
     private static final Scanner scanner = new Scanner(System.in);
     public static String getUserInput(String prompt) {
@@ -9,6 +10,7 @@ public class InputHelper {
         return scanner.nextLine();
     }
 
+    //Metode der viser dato gennem input og samtidig fanger ugyldigt input. (Datosøgning bruges ofte)
     public static LocalDate inputHelperShowDate() {
         LocalDate date = null;
         while (date == null) {

@@ -11,6 +11,7 @@ public class Booking {
         this.scanner = new Scanner(System.in);
     }
 
+    //Metode der opretter booking
     public void createBooking() {
         LocalDate date = InputHelper.inputHelperShowDate();
         ArrayList<BookingSlots> allAvailableSlots = new ArrayList<>();
@@ -53,6 +54,7 @@ public class Booking {
         }
     }
 
+    //Metode der sletter booking
     public void deleteBooking() {
         LocalDate date = InputHelper.inputHelperShowDate();
         ArrayList<BookingSlots> bookedSlots = calendar.getDailySlots(date);

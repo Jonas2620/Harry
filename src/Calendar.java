@@ -8,7 +8,7 @@ public class Calendar {
     public ArrayList<BookingSlots> calendar;
     private static final String FILE_NAME = "Harry Calendar.txt";
 
-    //Metode der opretter kalender, medmindre kalender fil eksisterer.
+    //Metode der opretter kalender, medmindre en tekstfil med navnet "Harry Calendar" eksisterer i projektmappen.
     public Calendar() {
         File file = new File(FILE_NAME);
         if (file.exists()) {
@@ -19,7 +19,7 @@ public class Calendar {
         }
     }
 
-    //Metode der laver kalender
+    //Metode der danner en kalender og bruger hjælpemetoderne isWeekend og createDailySlots
     private void createCalendar() {
         LocalDate startDate = LocalDate.of(2023, 10, 1);
         LocalDate endDate = LocalDate.of(2025, 12, 31);
@@ -36,7 +36,7 @@ public class Calendar {
         return day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY;
     }
 
-    //Metode der laver timeslots af en times varighed, startende fra kl.10
+    //Metode der laver timeslots for hver dag og gør dem til BookingSlots objekter
     private void createDailySlots(LocalDate date, String status) {
         int amount = 200;
         for (int hour = 10; hour < 18; hour++) {
@@ -45,7 +45,7 @@ public class Calendar {
         }
     }
 
-    //Metode der viser en valgt dato
+    //Metode der viser dato i kalenderen med tilhørende bookingslots.
     public void showDate() {
         LocalDate date = InputHelper.inputHelperShowDate();
 
@@ -57,7 +57,7 @@ public class Calendar {
         }
     }
 
-    //Metode der viser timeslots
+    //Metode der viser BookingSlots
     public ArrayList<BookingSlots> getDailySlots(LocalDate date) {
         ArrayList<BookingSlots> dailySlots = new ArrayList<>();
         for (BookingSlots booking : calendar) {
@@ -80,8 +80,7 @@ public class Calendar {
         System.out.println("Ferie/Fri er registreret for " + date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
     }
 
-    //Metode der gemmer kalender
-    @SuppressWarnings("CallToPrintStackTrace")
+    //Metode der gemmer kalenderfil
     public void saveCalendar() {
         List<String> lines = new ArrayList<>();
         for (BookingSlots slot : calendar) {
@@ -94,7 +93,7 @@ public class Calendar {
         }
     }
 
-    //Metode der indlæser kalender
+    //Metode der indlæser kalenderfil
     private void loadCalendar() {
         try {
             List<String> lines = Files.readAllLines(Paths.get(FILE_NAME));

@@ -11,6 +11,7 @@ public class Economy {
         this.scanner = new Scanner(System.in);
     }
 
+    //Metode der markerer en booket tid som "Kredit"
     public void markAsCredit() {
         LocalDate date = InputHelper.inputHelperShowDate();
         int counter = 1;
@@ -51,6 +52,7 @@ public class Economy {
         }
     }
 
+    //Metode der fjerner "Kredit" markering
     public void deleteCredit() {
         int counter = 1;
         boolean found = false;
@@ -89,6 +91,7 @@ public class Economy {
         }
     }
 
+    //Metode der tilføjer tilkøbte produkter til en booket tid
     public void addPurchasedProducts() {
         LocalDate date = InputHelper.inputHelperShowDate();
         ArrayList<BookingSlots> bookedSlots = calendar.getDailySlots(date);
@@ -127,7 +130,7 @@ public class Economy {
         }
     }
 
-
+    //Metode der danner en økonomisk rapport for en given dag.
     public void dailyEconomicReport() {
         int paidAmount = 0;
         int creditAmount = 0;

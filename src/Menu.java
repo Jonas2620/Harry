@@ -9,6 +9,7 @@ public class Menu {
         economy = new Economy(calendar);
     }
 
+    //Hovedmenu
     public void displayMenu() {
         System.out.println("Harry's Salon - Bookingsystem");
         System.out.println("1. Booking (Opret/Slet)");
@@ -19,6 +20,7 @@ public class Menu {
         System.out.println();
     }
 
+    //Undermenu 1: Booking
     public void displaySubMenu1() {
         System.out.println("Booking:");
         System.out.println("1. Opret aftale");
@@ -27,6 +29,7 @@ public class Menu {
         System.out.println();
     }
 
+    //Undermenu 2: Kalender
     public void displaySubMenu2() {
         System.out.println("Kalender:");
         System.out.println("1. Vis dato i kalenderen");
@@ -35,6 +38,7 @@ public class Menu {
         System.out.println();
     }
 
+    //Undermenu 3: Økonomi og rapporter
     public void displaySubMenu3() {
         System.out.println("Økonomi og Rapporter:");
         System.out.println("1. Tilføj tilkøbte produkter");
@@ -45,6 +49,7 @@ public class Menu {
         System.out.println();
     }
 
+    //runMenu starter GUI og styrer brugerens interageren med systemet
     public void runMenu() {
         boolean running = true;
 
