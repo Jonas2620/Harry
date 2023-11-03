@@ -54,51 +54,35 @@ public class Menu {
             System.out.println();
 
             switch (input) {
-                case "1": // Hovedmenu 1: "Booking (Opret/Slet)"
+                case "1" -> { // Hovedmenu 1: "Booking (Opret/Slet)"
                     boolean submenuRunning = true;
                     while (submenuRunning) {
                         displaySubMenu1();
                         String submenuChoice = InputHelper.getUserInput("Vælg en underkategori: ");
                         switch (submenuChoice) {
-                            case "1":
-                               booking.createBooking();
-                                break;
-                            case "2":
-                                booking.deleteBooking();
-                                break;
-                            case "3":
-                                submenuRunning = false;
-                                break;
-                            default:
-                                System.out.println("Ugyldigt valg. Prøv igen.");
-                                break;
+                            case "1" -> booking.createBooking();
+                            case "2" -> booking.deleteBooking();
+                            case "3" -> submenuRunning = false;
+                            default -> System.out.println("Ugyldigt valg. Prøv igen.");
                         }
                         System.out.println();
                     }
-                    break;
-                case "2": // Hovedmenu 2: "Kalender (Vis kalender/Registrer ferie- eller fridage)"
+                }
+                case "2" -> { // Hovedmenu 2: "Kalender (Vis kalender/Registrer ferie- eller fridage)"
                     boolean submenuRunning2 = true;
                     while (submenuRunning2) {
                         displaySubMenu2();
                         String submenuChoice2 = InputHelper.getUserInput("Vælg en underkategori: ");
                         switch (submenuChoice2) {
-                            case "1":
-                                calendar.showDate();
-                                break;
-                            case "2":
-                                calendar.registerHoliday();
-                                break;
-                            case "3":
-                                submenuRunning2 = false;
-                                break;
-                            default:
-                                System.out.println("Ugyldigt valg. Prøv igen.");
-                                break;
+                            case "1" -> calendar.showDate();
+                            case "2" -> calendar.registerHoliday();
+                            case "3" -> submenuRunning2 = false;
+                            default -> System.out.println("Ugyldigt valg. Prøv igen.");
                         }
                         System.out.println();
                     }
-                    break;
-                case "3": // Hovedmenu 3: "Økonomi (Generer revisorrapport/Registrer Betaling/Tilføj tilkøbte produkter)"
+                }
+                case "3" -> { // Hovedmenu 3: "Økonomi (Generer revisorrapport/Registrer Betaling/Tilføj tilkøbte produkter)"
                     boolean submenuRunning3 = true;
                     String Password = InputHelper.getUserInput("Indtast Kodeord: ");
                     if (Password.equals("hairyharry")) {
@@ -107,43 +91,28 @@ public class Menu {
                             displaySubMenu3();
                             String submenuChoice3 = InputHelper.getUserInput("Vælg en underkategori: ");
                             switch (submenuChoice3) {
-                                case "1":
-                                    economy.addPurchasedProducts();
-                                    break;
-                                case "2":
-                                    economy.markAsCredit();
-                                    break;
-                                case "3":
-                                    economy.deleteCredit();
-                                    break;
-                                case "4":
-                                    economy.dailyEconomicReport();
-                                    break;
-                                case "5":
-                                    submenuRunning3 = false;
-                                    break;
-                                default:
-                                    System.out.println("Ugyldigt valg. Prøv igen.");
-                                    break;
+                                case "1" -> economy.addPurchasedProducts();
+                                case "2" -> economy.markAsCredit();
+                                case "3" -> economy.deleteCredit();
+                                case "4" -> economy.dailyEconomicReport();
+                                case "5" -> submenuRunning3 = false;
+                                default -> System.out.println("Ugyldigt valg. Prøv igen.");
                             }
                             System.out.println();
                         }
-                    }
-                    else
+                    } else
                         System.out.println("Forkert kodeord\n");
-                    break;
-                case "4":
+                }
+                case "4" -> { // Hovedmenu 4: "Gem og afslut"
                     running = false;
                     calendar.saveCalendar();
-                    System.out.println("Dataen er gemt");
-                    break;
-                case "x":
-                    System.out.println("Ændringerne er annulleret");
+                    System.out.println("Ændringerne er gemt og programmet afsluttes");
+                }
+                case "x" -> { // "Annuller og afslut"
+                    System.out.println("Ændringerne er annulleret og programmet afsluttes");
                     running = false;
-                    break;
-                default:
-                    System.out.println("Ugyldigt valg. Prøv igen.");
-                    break;
+                }
+                default -> System.out.println("Ugyldigt valg. Prøv igen.");
             }
         }
     }

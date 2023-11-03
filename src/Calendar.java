@@ -1,15 +1,15 @@
-import java.time.LocalDate;
-import java.time.DayOfWeek;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.*;
 import java.io.*;
 import java.nio.file.*;
-import java.util.*;
+
 
 public class Calendar {
     public ArrayList<BookingSlots> calendar;
     private static final String FILE_NAME = "Harry Calendar.txt";
 
+    //Metode der opretter kalender, medmindre kalender fil eksisterer.
     public Calendar() {
         File file = new File(FILE_NAME);
         if (file.exists()) {
@@ -81,10 +81,11 @@ public class Calendar {
         System.out.println("Ferie/Fri er registreret for " + date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
     }
 
+    //Metode der gemmer kalender
     public void saveCalendar() {
         List<String> lines = new ArrayList<>();
         for (BookingSlots slot : calendar) {
-            lines.add(slot.toString()); // Sørg for at BookingSlots klassen har en passende toString() metode
+            lines.add(slot.toString());
         }
         try {
             Files.write(Paths.get(FILE_NAME), lines);
@@ -93,6 +94,7 @@ public class Calendar {
         }
     }
 
+    //Metode der indlæser kalender
     private void loadCalendar() {
         try {
             List<String> lines = Files.readAllLines(Paths.get(FILE_NAME));

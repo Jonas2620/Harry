@@ -1,7 +1,7 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-class BookingSlots {
+public class BookingSlots {
     public LocalDate date;
     public String timeSlot;
     public String status;

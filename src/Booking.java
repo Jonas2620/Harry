@@ -1,8 +1,6 @@
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Booking {
     private final Calendar calendar;
@@ -36,7 +34,7 @@ public class Booking {
                     System.out.println();
                 }
             }
-        } //
+        }
 
         System.out.print("Vælg en tid (nummer): ");
         try {
